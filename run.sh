@@ -1,1 +1,1 @@
-tsc ./main.ts --module commonjs && node .\main.js
+tsc ./main.ts --module commonjs && node ./main.js
