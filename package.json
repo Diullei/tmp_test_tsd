@@ -1,0 +1,16 @@
+{
+  "name": "tmp_test_tsd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "diff": "^2.1.0",
+    "dir-compare": "0.0.2"
+  }
+}

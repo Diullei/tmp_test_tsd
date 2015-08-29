@@ -1,0 +1,9 @@
+/.idea
+/.vagrant
+
+/node_modules
+/build/*.map
+
+npm-debug.log
+
+tsd-debug.log
