@@ -91,6 +91,10 @@ function assertDiff(expected, actual) {
     console.log(res.differences);
 }
 
+if ( !fs.existsSync( './case/diff' ) ) {
+    fs.mkdirSync( './case/diff' );
+}
+
 copyFolderRecursiveSync('./case/expected', './case/diff');
 copyFolderRecursiveSync('./case/result', './case/diff');
 
