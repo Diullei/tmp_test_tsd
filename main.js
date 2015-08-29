@@ -15,12 +15,39 @@ function pad(pad, str, padLeft) {
         return (str + pad).substring(0, pad.length);
     }
 }
-// lazy wrapper as alternative to readJSONSync
 function readFileSync(dest, encoding) {
     if (encoding === void 0) { encoding = 'utf8'; }
     return fs.readFileSync(dest, { encoding: encoding });
 }
 exports.readFileSync = readFileSync;
+function copyFileSync(source, target) {
+    var targetFile = target;
+    if (fs.existsSync(target)) {
+        if (fs.lstatSync(target).isDirectory()) {
+            targetFile = path.join(target, path.basename(source));
+        }
+    }
+    fs.writeFileSync(targetFile, readFileSync(source).replace(/\r?\n|\r/g, '\n'));
+}
+function copyFolderRecursiveSync(source, target) {
+    var files = [];
+    var targetFolder = path.join(target, path.basename(source));
+    if (!fs.existsSync(targetFolder)) {
+        fs.mkdirSync(targetFolder);
+    }
+    if (fs.lstatSync(source).isDirectory()) {
+        files = fs.readdirSync(source);
+        files.forEach(function (file) {
+            var curSource = path.join(source, file);
+            if (fs.lstatSync(curSource).isDirectory()) {
+                copyFolderRecursiveSync(curSource, targetFolder);
+            }
+            else {
+                copyFileSync(curSource, targetFolder);
+            }
+        });
+    }
+}
 function assertDiff(expected, actual) {
     var res = dircompare.compareSync(expected, actual, {
         compareSize: true,
@@ -52,4 +79,6 @@ function assertDiff(expected, actual) {
     });
     console.log(res.differences);
 }
-assertDiff('./case/expected', './case/result');
+copyFolderRecursiveSync('./case/expected', './case/diff');
+copyFolderRecursiveSync('./case/result', './case/diff');
+assertDiff('./case/diff/expected', './case/diff/result');
